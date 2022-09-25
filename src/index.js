@@ -10,6 +10,7 @@ app.use(express.json());
 
 const users = [];
 
+// Concluido
 function checksExistsUserAccount(request, response, next) {
   const { username } = request.headers;
 
@@ -22,6 +23,7 @@ function checksExistsUserAccount(request, response, next) {
   next()
 }
 
+// Concluido
 app.post("/users", (request, response) => {
   const { name, username } = request.body;
 
@@ -35,10 +37,14 @@ app.post("/users", (request, response) => {
   return response.status(201).json(user);
 });
 
+// Concluido
 app.get("/todos", checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+
+  return response.status(200).json(user.todos)
 });
 
+// Concluido
 app.post("/todos", checksExistsUserAccount, (request, response) => {
   const { user } = request;
   const { title, deadline } = request.body;
