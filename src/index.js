@@ -15,7 +15,6 @@ function checksExistsUserAccount(request, response, next) {
   const { username } = request.headers;
 
   const userFinded = users.find((user) => user.username === username);
-  console.log(userFinded)
 
   if (!userFinded) return response.status(400).jso({ error: "User dosent exists" })
 
@@ -62,8 +61,20 @@ app.post("/todos", checksExistsUserAccount, (request, response) => {
   return response.status(201).json(todo);
 });
 
+// Concluido
 app.put("/todos/:id", checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { user } = request;
+  const { id } = request.params
+  const { title, deadline } = request.body;
+
+  const todoFinded = user.todos.find((todo) => todo.id === id);
+
+  if (!todoFinded) return response.status(400).json({ error: 'Todo not found' });
+
+  todoFinded.title = title;
+  todoFinded.deadline = new Date(deadline);
+
+  return response.json(todoFinded);
 });
 
 app.patch("/todos/:id/done", checksExistsUserAccount, (request, response) => {
